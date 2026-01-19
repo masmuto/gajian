@@ -38,12 +38,22 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        /* Hide Scrollbar for Chrome/Safari/Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide Scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
         /* --- PRINT STYLES --- */
         @media print {
             @page { size: auto; margin: 5mm; }
             body { background: white; -webkit-print-color-adjust: exact; }
-            aside, .no-print, .action-col, button, #toast-container, .terminal-only { display: none !important; }
-            main { margin-left: 0 !important; padding: 0 !important; display: block !important; }
+            aside, .no-print, .action-col, button, #toast-container, .terminal-only, .mobile-nav { display: none !important; }
+            main { margin-left: 0 !important; padding: 0 !important; display: block !important; width: 100% !important; }
             
             /* Hide Terminal UI elements when printing */
             #terminal-view { display: none !important; }
@@ -64,7 +74,7 @@
 <body class="bg-slate-50 text-slate-800 antialiased">
 
     <!-- Toast Notification Container -->
-    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 no-print"></div>
+    <div id="toast-container" class="fixed top-4 right-4 z-[200] flex flex-col gap-2 no-print"></div>
 
     <!-- === APP CONTAINER === -->
     <div id="app-root">
@@ -74,7 +84,7 @@
     <!-- === MODALS (Global) === -->
 
     <!-- Modal PIN Access (Admin) -->
-    <div id="modal-pin" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[100] p-4 backdrop-blur-sm">
+    <div id="modal-pin" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[150] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-fade-in transform scale-100 transition-transform">
             <div class="p-8 text-center">
                 <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-600">
@@ -92,7 +102,7 @@
     </div>
 
     <!-- Modal Employee Login -->
-    <div id="modal-employee-login" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[100] p-4 backdrop-blur-sm">
+    <div id="modal-employee-login" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[150] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-fade-in transform scale-100 transition-transform">
             <div class="p-8 text-center">
                 <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600">
@@ -110,7 +120,7 @@
     </div>
 
     <!-- Modal Catatan Mengajar -->
-    <div id="modal-teaching-note" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[100] p-4 backdrop-blur-sm">
+    <div id="modal-teaching-note" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[150] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-fade-in">
             <div class="p-6 border-b border-slate-100 bg-indigo-50">
                 <div class="flex items-center gap-3">
@@ -138,7 +148,7 @@
     </div>
 
     <!-- Modal CRUD Aktivitas (NEW) -->
-    <div id="modal-activity" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+    <div id="modal-activity" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-[100] p-4">
         <div class="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-fade-in">
             <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
                 <h3 class="font-bold text-lg" id="modal-activity-title">Edit Aktivitas</h3>
@@ -185,7 +195,7 @@
     </div>
 
     <!-- Modal Form Karyawan (Admin) -->
-    <div id="modal-employee" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+    <div id="modal-employee" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-[100] p-4">
         <div class="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-fade-in">
             <div class="p-6 border-b border-slate-100 flex justify-between items-center">
                 <h3 class="font-bold text-lg" id="modal-employee-title">Tambah Pengajar/Staf</h3>
@@ -202,7 +212,7 @@
     </div>
 
     <!-- Modal Edit Role (Admin) -->
-    <div id="modal-role" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+    <div id="modal-role" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-[100] p-4">
         <div class="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-fade-in">
             <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50"><h3 class="font-bold text-lg" id="modal-role-title">Kelola Posisi & Fee</h3><button onclick="toggleModal('modal-role', false)" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button></div>
             <form onsubmit="handleSaveRole(event)" class="p-6 space-y-4">
@@ -216,7 +226,7 @@
     </div>
 
     <!-- Modal Edit Payroll (Admin) -->
-    <div id="modal-payroll-edit" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+    <div id="modal-payroll-edit" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-[100] p-4">
         <div class="bg-white rounded-xl shadow-xl w-full max-w-sm overflow-hidden animate-fade-in">
             <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50"><h3 class="font-bold text-lg">Atur Komponen Gaji</h3><button onclick="toggleModal('modal-payroll-edit', false)" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button></div>
             <form onsubmit="handleSavePayroll(event)" class="p-6 space-y-4">
@@ -234,7 +244,7 @@
     </div>
 
     <!-- Modal PAYSLIP (Shared) -->
-    <div id="modal-payslip" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-[100] p-4">
+    <div id="modal-payslip" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-[200] p-4">
         <div class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden animate-fade-in flex flex-col max-h-[90vh]">
             <div class="p-6 bg-white border-b-2 border-slate-800 modal-actions flex justify-between items-start"><div><h2 class="text-2xl font-bold text-slate-900 uppercase tracking-wide">Slip Gaji</h2><p class="text-slate-500 text-sm">Bukti Pembayaran Honorarium</p></div><button onclick="closePayslip()" class="text-slate-400 hover:text-slate-600 no-print"><i data-lucide="x" class="w-6 h-6"></i></button></div>
             <div id="payslip-content" class="p-8 overflow-y-auto bg-white"></div>
@@ -252,6 +262,7 @@
             activeEmployeeTab: 'dashboard',
             currentEmployeeId: null,
             scanMode: 'IN',
+            mobileMenuOpen: false, // NEW: Untuk mobile sidebar admin
             // Filter States
             filterActivityMonth: new Date().toISOString().slice(0, 7), // YYYY-MM
             filterActivityEmp: '', // Empty = All
@@ -294,24 +305,24 @@
             const toast = document.createElement('div');
             const bgColor = type === 'error' ? 'bg-red-500' : 'bg-green-600';
             const icon = type === 'error' ? 'alert-circle' : 'check-circle';
-            toast.className = `${bgColor} text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 transform transition-all duration-300 animate-fade-in`;
+            toast.className = `${bgColor} text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 transform transition-all duration-300 animate-fade-in z-50`;
             toast.innerHTML = `<i data-lucide="${icon}" class="w-5 h-5"></i> <span>${message}</span>`;
             container.appendChild(toast);
             lucide.createIcons();
             setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
         };
         
-        // Updated to handle specific date objects or strings
         const getAdjustmentKey = (empId, dateObj = new Date()) => {
             if (typeof dateObj === 'string') dateObj = new Date(dateObj);
             return `${empId}-${dateObj.getMonth()}-${dateObj.getFullYear()}`;
         };
 
         // --- CORE LOGIC ---
-        function setViewMode(mode) { state.viewMode = mode; renderApp(); }
-        function switchTab(tabName) { state.activeTab = tabName; renderApp(); }
+        function setViewMode(mode) { state.viewMode = mode; state.mobileMenuOpen = false; renderApp(); }
+        function switchTab(tabName) { state.activeTab = tabName; state.mobileMenuOpen = false; renderApp(); }
         function switchSettingsTab(subTab) { state.activeSettingsTab = subTab; renderApp(); }
         function switchEmployeeTab(tabName) { state.activeEmployeeTab = tabName; renderApp(); }
+        function toggleMobileMenu() { state.mobileMenuOpen = !state.mobileMenuOpen; renderApp(); }
 
         // --- SECURITY ---
         function requestAdminAccess() { document.getElementById('modal-pin').classList.replace('hidden', 'flex'); document.getElementById('adminPinInput').value = ''; document.getElementById('adminPinInput').focus(); }
@@ -701,7 +712,55 @@
             else if (state.activeTab === 'activities') content = renderActivities();
             else if (state.activeTab === 'payroll') content = renderPayroll();
             else content = renderSettings();
-            return `<div id="admin-layout" class="flex min-h-screen"><aside class="w-64 bg-white border-r border-slate-200 fixed h-full z-10 hidden md:flex flex-col"><div class="p-6 flex items-center gap-3 border-b border-slate-100"><div class="bg-indigo-600 p-2 rounded-lg"><i data-lucide="school" class="text-white w-6 h-6"></i></div><span class="font-bold text-xl text-slate-800">Admin LBB</span></div><nav class="p-4 space-y-2 flex-1"><button onclick="switchTab('dashboard')" class="${getNavClass('dashboard')}"><i data-lucide="layout-dashboard" class="w-5 h-5"></i><span>Dashboard</span></button><button onclick="switchTab('employees')" class="${getNavClass('employees')}"><i data-lucide="users" class="w-5 h-5"></i><span>Data Tentor/Staf</span></button><button onclick="switchTab('activities')" class="${getNavClass('activities')}"><i data-lucide="activity" class="w-5 h-5"></i><span>Aktivitas Tentor</span></button><button onclick="switchTab('payroll')" class="${getNavClass('payroll')}"><i data-lucide="wallet" class="w-5 h-5"></i><span>Penggajian</span></button><button onclick="switchTab('settings')" class="${getNavClass('settings')} mt-4 border-t border-slate-100 pt-4"><i data-lucide="settings" class="w-5 h-5"></i><span>Pengaturan</span></button><button onclick="setViewMode('terminal')" class="w-full flex items-center gap-3 p-3 rounded-lg transition-colors text-indigo-600 hover:bg-indigo-50 mt-2 font-medium"><i data-lucide="monitor" class="w-5 h-5"></i><span>Mode Terminal</span></button></nav><div class="p-6 border-t border-slate-100"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-500">A</div><div><p class="text-sm font-medium text-slate-700">Admin</p><p class="text-xs text-slate-400">Kepala Cabang</p></div></div></div></aside><main class="flex-1 md:ml-64 p-8 bg-slate-50">${content}</main></div>`;
+            
+            // --- Responsive Sidebar Logic ---
+            const sidebarClass = state.mobileMenuOpen ? 'translate-x-0' : '-translate-x-full';
+            const overlayClass = state.mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none';
+
+            return `
+            <div id="admin-layout" class="flex min-h-screen relative">
+                
+                <!-- Mobile Header -->
+                <header class="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-slate-200 z-40 px-4 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                         <div class="bg-indigo-600 p-1.5 rounded-lg"><i data-lucide="school" class="text-white w-5 h-5"></i></div>
+                         <span class="font-bold text-lg text-slate-800">Admin LBB</span>
+                    </div>
+                    <button onclick="toggleMobileMenu()" class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
+                        <i data-lucide="${state.mobileMenuOpen ? 'x' : 'menu'}" class="w-6 h-6"></i>
+                    </button>
+                </header>
+
+                <!-- Mobile Overlay -->
+                <div onclick="toggleMobileMenu()" class="fixed inset-0 bg-black/50 z-30 md:hidden transition-opacity duration-300 ${overlayClass}"></div>
+
+                <!-- Sidebar -->
+                <aside class="fixed inset-y-0 left-0 w-64 bg-white border-r border-slate-200 z-40 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${sidebarClass} flex flex-col pt-16 md:pt-0">
+                    <div class="p-6 hidden md:flex items-center gap-3 border-b border-slate-100">
+                        <div class="bg-indigo-600 p-2 rounded-lg"><i data-lucide="school" class="text-white w-6 h-6"></i></div>
+                        <span class="font-bold text-xl text-slate-800">Admin LBB</span>
+                    </div>
+                    <nav class="p-4 space-y-2 flex-1 overflow-y-auto">
+                        <button onclick="switchTab('dashboard')" class="${getNavClass('dashboard')}"><i data-lucide="layout-dashboard" class="w-5 h-5"></i><span>Dashboard</span></button>
+                        <button onclick="switchTab('employees')" class="${getNavClass('employees')}"><i data-lucide="users" class="w-5 h-5"></i><span>Data Tentor/Staf</span></button>
+                        <button onclick="switchTab('activities')" class="${getNavClass('activities')}"><i data-lucide="activity" class="w-5 h-5"></i><span>Aktivitas Tentor</span></button>
+                        <button onclick="switchTab('payroll')" class="${getNavClass('payroll')}"><i data-lucide="wallet" class="w-5 h-5"></i><span>Penggajian</span></button>
+                        <button onclick="switchTab('settings')" class="${getNavClass('settings')} mt-4 border-t border-slate-100 pt-4"><i data-lucide="settings" class="w-5 h-5"></i><span>Pengaturan</span></button>
+                        <button onclick="setViewMode('terminal')" class="w-full flex items-center gap-3 p-3 rounded-lg transition-colors text-indigo-600 hover:bg-indigo-50 mt-2 font-medium"><i data-lucide="monitor" class="w-5 h-5"></i><span>Mode Terminal</span></button>
+                    </nav>
+                    <div class="p-6 border-t border-slate-100">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-500">A</div>
+                            <div><p class="text-sm font-medium text-slate-700">Admin</p><p class="text-xs text-slate-400">Kepala Cabang</p></div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="flex-1 md:ml-64 p-4 md:p-8 bg-slate-50 pt-20 md:pt-8 w-full overflow-x-hidden">
+                    ${content}
+                </main>
+            </div>`;
         }
 
         function renderActivities() {
@@ -721,12 +780,12 @@
                 
                 return `
                 <tr class="hover:bg-slate-50 border-b border-slate-100 last:border-0 transition-colors">
-                    <td class="p-4 align-top text-sm text-slate-600">${new Date(s.date).toLocaleDateString('id-ID', {weekday:'short', day:'numeric', month:'short', year:'2-digit'})}</td>
-                    <td class="p-4 align-top font-medium text-slate-800">${s.empName}</td>
+                    <td class="p-4 align-top text-sm text-slate-600 whitespace-nowrap">${new Date(s.date).toLocaleDateString('id-ID', {weekday:'short', day:'numeric', month:'short'})}</td>
+                    <td class="p-4 align-top font-medium text-slate-800 whitespace-nowrap">${s.empName}</td>
                     <td class="p-4 align-top"><span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs font-bold">Sesi ${s.sessionIndex}</span></td>
-                    <td class="p-4 align-top font-mono text-sm text-green-700">${startTime}</td>
-                    <td class="p-4 align-top font-mono text-sm text-indigo-700">${endTime}</td>
-                    <td class="p-4 align-top text-sm text-slate-500 italic max-w-xs break-words">${s.note || '-'}</td>
+                    <td class="p-4 align-top font-mono text-sm text-green-700 whitespace-nowrap">${startTime}</td>
+                    <td class="p-4 align-top font-mono text-sm text-indigo-700 whitespace-nowrap">${endTime}</td>
+                    <td class="p-4 align-top text-sm text-slate-500 italic min-w-[200px]">${s.note || '-'}</td>
                     <td class="p-4 align-top">
                         <div class="flex gap-2">
                             <button onclick="openEditActivityModal(${s.startId})" class="p-1.5 text-blue-600 hover:bg-blue-50 rounded" title="Edit"><i data-lucide="pencil" class="w-4 h-4"></i></button>
@@ -743,7 +802,7 @@
                         <h2 class="text-2xl font-bold text-slate-800">Aktivitas Tentor</h2>
                         <p class="text-slate-500 text-sm">Monitoring sesi belajar per hari.</p>
                     </div>
-                    <button onclick="openAddActivityModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700 text-sm font-medium">
+                    <button onclick="openAddActivityModal()" class="w-full md:w-auto bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-indigo-700 text-sm font-medium shadow-sm active:scale-95 transition-all">
                         <i data-lucide="plus-circle" class="w-4 h-4"></i> Tambah Manual
                     </button>
                 </div>
@@ -751,12 +810,12 @@
                 <!-- FILTERS -->
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col md:flex-row gap-4 items-center">
                     <div class="w-full md:w-auto flex-1 flex items-center gap-2">
-                        <span class="text-sm font-medium text-slate-600"><i data-lucide="calendar" class="w-4 h-4 inline mr-1"></i>Bulan:</span>
-                        <input type="month" value="${state.filterActivityMonth}" onchange="setActivityFilter('month', this.value)" class="p-2 border border-slate-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                        <span class="text-sm font-medium text-slate-600 min-w-[60px]"><i data-lucide="calendar" class="w-4 h-4 inline mr-1"></i>Bulan:</span>
+                        <input type="month" value="${state.filterActivityMonth}" onchange="setActivityFilter('month', this.value)" class="flex-1 p-2 border border-slate-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
                     <div class="w-full md:w-auto flex-1 flex items-center gap-2">
-                        <span class="text-sm font-medium text-slate-600"><i data-lucide="user" class="w-4 h-4 inline mr-1"></i>Tentor:</span>
-                        <select onchange="setActivityFilter('emp', this.value)" class="p-2 border border-slate-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+                        <span class="text-sm font-medium text-slate-600 min-w-[60px]"><i data-lucide="user" class="w-4 h-4 inline mr-1"></i>Tentor:</span>
+                        <select onchange="setActivityFilter('emp', this.value)" class="flex-1 p-2 border border-slate-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
                             <option value="">Semua Tentor</option>
                             ${state.employees.map(e => `<option value="${e.id}" ${state.filterActivityEmp === e.id ? 'selected' : ''}>${e.name}</option>`).join('')}
                         </select>
@@ -764,17 +823,17 @@
                 </div>
 
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto no-scrollbar pb-2">
                         <table class="w-full text-left">
                             <thead class="bg-slate-50 border-b border-slate-200 text-sm uppercase tracking-wider">
                                 <tr>
-                                    <th class="p-4 font-bold text-slate-600">Waktu</th>
-                                    <th class="p-4 font-bold text-slate-600">Tentor</th>
-                                    <th class="p-4 font-bold text-slate-600">Sesi</th>
-                                    <th class="p-4 font-bold text-slate-600">Mulai</th>
-                                    <th class="p-4 font-bold text-slate-600">Selesai</th>
-                                    <th class="p-4 font-bold text-slate-600 w-1/4">Catatan</th>
-                                    <th class="p-4 font-bold text-slate-600">Aksi</th>
+                                    <th class="p-4 font-bold text-slate-600 whitespace-nowrap">Waktu</th>
+                                    <th class="p-4 font-bold text-slate-600 whitespace-nowrap">Tentor</th>
+                                    <th class="p-4 font-bold text-slate-600 whitespace-nowrap">Sesi</th>
+                                    <th class="p-4 font-bold text-slate-600 whitespace-nowrap">Mulai</th>
+                                    <th class="p-4 font-bold text-slate-600 whitespace-nowrap">Selesai</th>
+                                    <th class="p-4 font-bold text-slate-600 min-w-[200px]">Catatan</th>
+                                    <th class="p-4 font-bold text-slate-600 whitespace-nowrap">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -787,8 +846,8 @@
         }
 
         function renderEmployees() {
-            const rows = state.employees.map(e => `<tr class="hover:bg-slate-50 border-b border-slate-100 last:border-0"><td class="p-4 font-mono text-indigo-600 font-bold">${e.id}</td><td class="p-4 text-slate-800">${e.name}</td><td class="p-4"><span class="bg-slate-100 text-slate-600 px-2 py-1 rounded text-xs uppercase tracking-wide border border-slate-200">${e.role}</span></td><td class="p-4 text-slate-600">${formatRupiah(e.salaryPerDay)}</td><td class="p-4 text-right flex justify-end gap-2"><button onclick="openEditEmployeeModal('${e.id}')" class="text-indigo-500 hover:text-indigo-700 p-2 hover:bg-indigo-50 rounded-full"><i data-lucide="pencil" class="w-4 h-4"></i></button><button onclick="deleteEmployee('${e.id}')" class="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded-full"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`).join('');
-            return `<div class="space-y-6 animate-fade-in"><div class="flex justify-between items-center"><h2 class="text-2xl font-bold text-slate-800">Data Tentor & Staf</h2><button onclick="openAddEmployeeModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700 transition-colors"><i data-lucide="plus" class="w-4 h-4"></i> Tambah Data</button></div><div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><table class="w-full text-left"><thead class="bg-slate-50 border-b border-slate-200"><tr><th class="p-4 font-semibold text-slate-600">ID</th><th class="p-4 font-semibold text-slate-600">Nama</th><th class="p-4 font-semibold text-slate-600">Posisi</th><th class="p-4 font-semibold text-slate-600">Fee/Sesi</th><th class="p-4 font-semibold text-slate-600 text-right">Aksi</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+            const rows = state.employees.map(e => `<tr class="hover:bg-slate-50 border-b border-slate-100 last:border-0"><td class="p-4 font-mono text-indigo-600 font-bold whitespace-nowrap">${e.id}</td><td class="p-4 text-slate-800 whitespace-nowrap">${e.name}</td><td class="p-4"><span class="bg-slate-100 text-slate-600 px-2 py-1 rounded text-xs uppercase tracking-wide border border-slate-200 whitespace-nowrap">${e.role}</span></td><td class="p-4 text-slate-600 whitespace-nowrap">${formatRupiah(e.salaryPerDay)}</td><td class="p-4 text-right flex justify-end gap-2 whitespace-nowrap"><button onclick="openEditEmployeeModal('${e.id}')" class="text-indigo-500 hover:text-indigo-700 p-2 hover:bg-indigo-50 rounded-full"><i data-lucide="pencil" class="w-4 h-4"></i></button><button onclick="deleteEmployee('${e.id}')" class="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded-full"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`).join('');
+            return `<div class="space-y-6 animate-fade-in"><div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"><h2 class="text-2xl font-bold text-slate-800">Data Tentor & Staf</h2><button onclick="openAddEmployeeModal()" class="w-full md:w-auto bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-indigo-700 transition-colors shadow-sm active:scale-95"><i data-lucide="plus" class="w-4 h-4"></i> Tambah Data</button></div><div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><div class="overflow-x-auto no-scrollbar pb-2"><table class="w-full text-left"><thead class="bg-slate-50 border-b border-slate-200"><tr><th class="p-4 font-semibold text-slate-600 whitespace-nowrap">ID</th><th class="p-4 font-semibold text-slate-600 whitespace-nowrap">Nama</th><th class="p-4 font-semibold text-slate-600 whitespace-nowrap">Posisi</th><th class="p-4 font-semibold text-slate-600 whitespace-nowrap">Fee/Sesi</th><th class="p-4 font-semibold text-slate-600 text-right whitespace-nowrap">Aksi</th></tr></thead><tbody>${rows}</tbody></table></div></div></div>`;
         }
 
         function renderPayroll() {
@@ -822,7 +881,7 @@
                 const tot = (work * e.salaryPerDay) + adj.bonus + adj.allowance;
                 gTotal += tot;
                 
-                return `<tr class="hover:bg-slate-50 border-b border-slate-100 last:border-0"><td class="p-4 text-center text-slate-400 font-medium">${idx+1}</td><td class="p-4 font-medium text-slate-800">${e.name}<div class="text-xs text-slate-500 font-mono">${e.id}</div></td><td class="p-4 text-slate-600 text-sm"><div>Fee: ${formatRupiah(work*e.salaryPerDay)}</div><div class="text-xs text-slate-400">(${work} Sesi)</div></td><td class="p-4 text-green-600 text-sm">+ ${formatRupiah(adj.bonus)}</td><td class="p-4 text-indigo-600 text-sm">+ ${formatRupiah(adj.allowance)}</td><td class="p-4 text-right font-bold text-slate-800 text-lg">${formatRupiah(tot)}</td><td class="p-4 text-center action-col"><div class="flex justify-center gap-2"><button onclick="openPayrollEdit('${e.id}')" class="bg-slate-100 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 p-2 rounded-lg" title="Edit Komponen"><i data-lucide="pencil" class="w-4 h-4"></i></button><button onclick="openPayslip('${e.id}')" class="bg-slate-800 hover:bg-slate-900 text-white p-2 rounded-lg" title="Lihat Slip"><i data-lucide="printer" class="w-4 h-4"></i></button></div></td></tr>`;
+                return `<tr class="hover:bg-slate-50 border-b border-slate-100 last:border-0"><td class="p-4 text-center text-slate-400 font-medium whitespace-nowrap">${idx+1}</td><td class="p-4 font-medium text-slate-800 whitespace-nowrap">${e.name}<div class="text-xs text-slate-500 font-mono">${e.id}</div></td><td class="p-4 text-slate-600 text-sm whitespace-nowrap"><div>Fee: ${formatRupiah(work*e.salaryPerDay)}</div><div class="text-xs text-slate-400">(${work} Sesi)</div></td><td class="p-4 text-green-600 text-sm whitespace-nowrap">+ ${formatRupiah(adj.bonus)}</td><td class="p-4 text-indigo-600 text-sm whitespace-nowrap">+ ${formatRupiah(adj.allowance)}</td><td class="p-4 text-right font-bold text-slate-800 text-lg whitespace-nowrap">${formatRupiah(tot)}</td><td class="p-4 text-center action-col"><div class="flex justify-center gap-2"><button onclick="openPayrollEdit('${e.id}')" class="bg-slate-100 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 p-2 rounded-lg" title="Edit Komponen"><i data-lucide="pencil" class="w-4 h-4"></i></button><button onclick="openPayslip('${e.id}')" class="bg-slate-800 hover:bg-slate-900 text-white p-2 rounded-lg" title="Lihat Slip"><i data-lucide="printer" class="w-4 h-4"></i></button></div></td></tr>`;
             }).join('');
             
             return `
@@ -832,38 +891,40 @@
                         <h2 class="text-2xl font-bold text-slate-800">Rekapitulasi Gaji</h2>
                         <p class="text-slate-500 text-sm">Kelola penggajian dan slip bulanan.</p>
                     </div>
-                    <div class="flex items-center gap-2 bg-white p-1.5 border border-slate-300 rounded-lg shadow-sm">
+                    <div class="w-full md:w-auto flex items-center gap-2 bg-white p-1.5 border border-slate-300 rounded-lg shadow-sm">
                         <i data-lucide="calendar" class="w-4 h-4 text-slate-500 ml-2"></i>
-                        <span class="text-sm font-medium text-slate-600 mr-1">Periode:</span>
-                        <input type="month" value="${state.filterPayrollMonth}" onchange="setPayrollFilter(this.value)" class="p-1 text-sm outline-none font-bold text-indigo-700 bg-transparent cursor-pointer">
+                        <span class="text-sm font-medium text-slate-600 mr-1 whitespace-nowrap">Periode:</span>
+                        <input type="month" value="${state.filterPayrollMonth}" onchange="setPayrollFilter(this.value)" class="p-1 text-sm outline-none font-bold text-indigo-700 bg-transparent cursor-pointer w-full">
                     </div>
                 </div>
 
                 <!-- Monthly Summary Card -->
-                <div class="bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-100 rounded-xl p-6 flex flex-col md:flex-row justify-between items-center gap-6 no-print">
-                    <div class="flex items-center gap-4">
-                        <div class="p-3 bg-white rounded-full shadow-sm text-indigo-600"><i data-lucide="banknote" class="w-6 h-6"></i></div>
-                        <div>
-                            <p class="text-xs font-bold text-indigo-400 uppercase tracking-wide">Total Estimasi Payout</p>
-                            <p class="text-2xl font-bold text-slate-800">${formatRupiah(gTotal)}</p>
-                            <p class="text-xs text-slate-500">${filterMonthName}</p>
+                <div class="bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-100 rounded-xl p-6 flex flex-col md:flex-row justify-between items-center gap-6 no-print shadow-sm">
+                    <div class="flex flex-col md:flex-row gap-6 w-full">
+                        <div class="flex items-center gap-4">
+                            <div class="p-3 bg-white rounded-full shadow-sm text-indigo-600"><i data-lucide="banknote" class="w-6 h-6"></i></div>
+                            <div>
+                                <p class="text-xs font-bold text-indigo-400 uppercase tracking-wide">Total Estimasi Payout</p>
+                                <p class="text-2xl font-bold text-slate-800">${formatRupiah(gTotal)}</p>
+                                <p class="text-xs text-slate-500">${filterMonthName}</p>
+                            </div>
+                        </div>
+                        <div class="h-px md:h-auto w-full md:w-px bg-indigo-200"></div>
+                        <div class="flex items-center gap-4">
+                             <div class="p-3 bg-white rounded-full shadow-sm text-blue-600"><i data-lucide="users" class="w-6 h-6"></i></div>
+                             <div>
+                                <p class="text-xs font-bold text-blue-400 uppercase tracking-wide">Total Sesi Mengajar</p>
+                                <p class="text-2xl font-bold text-slate-800">${totalSessionsAll} <span class="text-sm font-normal text-slate-500">Sesi</span></p>
+                                <p class="text-xs text-slate-500">${state.employees.length} Tentor Aktif</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="h-10 w-px bg-indigo-200 hidden md:block"></div>
-                    <div class="flex items-center gap-4">
-                         <div class="p-3 bg-white rounded-full shadow-sm text-blue-600"><i data-lucide="users" class="w-6 h-6"></i></div>
-                         <div>
-                            <p class="text-xs font-bold text-blue-400 uppercase tracking-wide">Total Sesi Mengajar</p>
-                            <p class="text-2xl font-bold text-slate-800">${totalSessionsAll} <span class="text-sm font-normal text-slate-500">Sesi</span></p>
-                            <p class="text-xs text-slate-500">${state.employees.length} Tentor Aktif</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-2 w-full md:w-auto mt-2 md:mt-0">
-                        <button id="btn-process-payroll" onclick="processMonthlyPayroll()" class="flex-1 md:flex-none bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-indigo-700 text-sm shadow-lg transition-all active:scale-95">
-                            <i data-lucide="calculator" class="w-4 h-4"></i> Rekap Periode Ini
+                    <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto mt-2 md:mt-0">
+                        <button id="btn-process-payroll" onclick="processMonthlyPayroll()" class="flex-1 md:flex-none bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-indigo-700 text-sm shadow-sm transition-all active:scale-95 whitespace-nowrap">
+                            <i data-lucide="calculator" class="w-4 h-4"></i> <span class="md:hidden lg:inline">Rekap </span>
                         </button>
-                        <button onclick="window.print()" class="flex-1 md:flex-none bg-slate-800 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-slate-900 text-sm shadow-lg transition-all active:scale-95">
-                            <i data-lucide="printer" class="w-4 h-4"></i> Cetak Laporan
+                        <button onclick="window.print()" class="flex-1 md:flex-none bg-slate-800 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-slate-900 text-sm shadow-sm transition-all active:scale-95 whitespace-nowrap">
+                            <i data-lucide="printer" class="w-4 h-4"></i> <span class="md:hidden lg:inline">Cetak</span>
                         </button>
                     </div>
                 </div>
@@ -875,24 +936,24 @@
                 </div>
 
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mt-4">
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto no-scrollbar pb-2">
                         <table class="w-full text-left">
                             <thead class="bg-slate-50 border-b border-slate-200 text-sm uppercase tracking-wider">
                                 <tr>
-                                    <th class="p-4 font-bold text-slate-600 w-12 text-center">No</th>
-                                    <th class="p-4 font-bold text-slate-600">Nama</th>
-                                    <th class="p-4 font-bold text-slate-600">Fee Sesi</th>
-                                    <th class="p-4 font-bold text-slate-600">Bonus</th>
-                                    <th class="p-4 font-bold text-slate-600">Tunjangan</th>
-                                    <th class="p-4 font-bold text-slate-600 text-right">Total</th>
-                                    <th class="p-4 font-bold text-slate-600 text-center action-col">Aksi</th>
+                                    <th class="p-4 font-bold text-slate-600 w-12 text-center whitespace-nowrap">No</th>
+                                    <th class="p-4 font-bold text-slate-600 whitespace-nowrap">Nama</th>
+                                    <th class="p-4 font-bold text-slate-600 whitespace-nowrap">Fee Sesi</th>
+                                    <th class="p-4 font-bold text-slate-600 whitespace-nowrap">Bonus</th>
+                                    <th class="p-4 font-bold text-slate-600 whitespace-nowrap">Tunjangan</th>
+                                    <th class="p-4 font-bold text-slate-600 text-right whitespace-nowrap">Total</th>
+                                    <th class="p-4 font-bold text-slate-600 text-center action-col whitespace-nowrap">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>${rows}</tbody>
                             <tfoot class="bg-slate-50 border-t border-slate-200">
                                 <tr>
                                     <td colspan="5" class="p-4 text-right font-bold text-slate-700 uppercase text-sm tracking-wide">Total:</td>
-                                    <td class="p-4 text-right font-bold text-slate-900 text-xl">${formatRupiah(gTotal)}</td>
+                                    <td class="p-4 text-right font-bold text-slate-900 text-xl whitespace-nowrap">${formatRupiah(gTotal)}</td>
                                     <td class="action-col"></td>
                                 </tr>
                             </tfoot>
@@ -908,27 +969,162 @@
             const sessionsToday = state.attendanceLog.filter(l => l.timestamp.startsWith(today) && l.type === 'IN').length;
             const logsHTML = state.attendanceLog.length ? state.attendanceLog.slice().reverse().slice(0,5).map(l => {
                 const name = state.employees.find(e => e.id === l.employeeId)?.name || 'Unknown';
-                return `<div class="p-4 flex justify-between items-center hover:bg-slate-50"><div class="flex items-center space-x-3"><div class="p-2 rounded-full ${l.type==='IN'?'bg-green-100 text-green-600':'bg-red-100 text-red-600'}"><i data-lucide="${l.type==='IN'?'play-circle':'stop-circle'}" class="w-4 h-4"></i></div><div><p class="font-medium text-slate-800">${name}</p><p class="text-xs text-slate-500">${l.type==='IN'?'Mulai Sesi':'Selesai Sesi'}</p></div></div><span class="text-sm text-slate-500 font-mono">${formatDate(l.timestamp)}</span></div>`;
-            }).join('') : '<div class="p-8 text-center text-slate-400">Belum ada aktivitas sesi</div>';
+                return `<div class="p-4 flex justify-between items-center hover:bg-slate-50 border-b border-slate-100 last:border-0"><div class="flex items-center space-x-3"><div class="p-2 rounded-full ${l.type==='IN'?'bg-green-100 text-green-600':'bg-red-100 text-red-600'}"><i data-lucide="${l.type==='IN'?'play-circle':'stop-circle'}" class="w-4 h-4"></i></div><div><p class="font-medium text-slate-800 text-sm">${name}</p><p class="text-xs text-slate-500">${l.type==='IN'?'Mulai Sesi':'Selesai Sesi'}</p></div></div><span class="text-xs text-slate-500 font-mono">${formatDate(l.timestamp)}</span></div>`;
+            }).join('') : '<div class="p-8 text-center text-slate-400 text-sm">Belum ada aktivitas sesi</div>';
 
-            return `<div class="space-y-6 animate-fade-in"><h2 class="text-2xl font-bold text-slate-800">Dashboard</h2><div class="grid grid-cols-1 md:grid-cols-3 gap-4"><div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex items-center space-x-4"><div class="p-3 bg-indigo-100 text-indigo-600 rounded-full"><i data-lucide="users"></i></div><div><p class="text-sm text-slate-500">Total Staf</p><p class="text-2xl font-bold text-slate-800">${state.employees.length}</p></div></div><div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex items-center space-x-4"><div class="p-3 bg-green-100 text-green-600 rounded-full"><i data-lucide="book-open"></i></div><div><p class="text-sm text-slate-500">Sesi Hari Ini</p><p class="text-2xl font-bold text-slate-800">${sessionsToday}</p></div></div><div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex items-center space-x-4"><div class="p-3 bg-indigo-100 text-indigo-600 rounded-full"><i data-lucide="clock"></i></div><div><p class="text-sm text-slate-500">Total Log</p><p class="text-2xl font-bold text-slate-800">${state.attendanceLog.length}</p></div></div></div><div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><div class="p-4 border-b border-slate-100 bg-slate-50"><h3 class="font-semibold text-slate-700">Aktivitas Terakhir</h3></div><div class="divide-y divide-slate-100">${logsHTML}</div></div></div>`;
+            return `<div class="space-y-6 animate-fade-in"><h2 class="text-2xl font-bold text-slate-800">Dashboard</h2><div class="grid grid-cols-1 md:grid-cols-3 gap-4"><div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex items-center space-x-4"><div class="p-3 bg-indigo-100 text-indigo-600 rounded-full"><i data-lucide="users"></i></div><div><p class="text-sm text-slate-500">Total Staf</p><p class="text-2xl font-bold text-slate-800">${state.employees.length}</p></div></div><div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex items-center space-x-4"><div class="p-3 bg-green-100 text-green-600 rounded-full"><i data-lucide="book-open"></i></div><div><p class="text-sm text-slate-500">Sesi Hari Ini</p><p class="text-2xl font-bold text-slate-800">${sessionsToday}</p></div></div><div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex items-center space-x-4"><div class="p-3 bg-indigo-100 text-indigo-600 rounded-full"><i data-lucide="clock"></i></div><div><p class="text-sm text-slate-500">Total Log</p><p class="text-2xl font-bold text-slate-800">${state.attendanceLog.length}</p></div></div></div><div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><div class="p-4 border-b border-slate-100 bg-slate-50"><h3 class="font-semibold text-slate-700">Aktivitas Terakhir</h3></div><div class="">${logsHTML}</div></div></div>`;
         }
 
         function renderSettings() {
-            const getTabClass = (t) => `px-6 py-3 font-medium text-sm transition-colors border-b-2 ${state.activeSettingsTab===t ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 hover:text-slate-700'}`;
+            const getTabClass = (t) => `flex-1 md:flex-none text-center md:text-left px-6 py-3 font-medium text-sm transition-colors border-b-2 ${state.activeSettingsTab===t ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 hover:text-slate-700'}`;
             let settingsContent = '';
             if (state.activeSettingsTab === 'company') {
-                settingsContent = `<div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 animate-fade-in"><div class="flex items-center gap-3 mb-6"><div class="p-2 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="building-2" class="w-5 h-5"></i></div><h3 class="font-semibold text-slate-700 text-lg">Identitas LBB</h3></div><form onsubmit="saveCompanySettings(event)" class="space-y-6 max-w-2xl"><div><label class="block text-sm font-medium text-slate-700 mb-1">Nama LBB</label><input type="text" name="companyName" value="${state.company.name}" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" required></div><div><label class="block text-sm font-medium text-slate-700 mb-1">Prefix ID (Otomatis)</label><div class="flex items-center gap-2"><input type="text" name="empPrefix" value="${state.company.empPrefix || 'TENTOR'}" class="w-32 p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none font-mono uppercase" required><span class="text-sm text-slate-400">Contoh Hasil: ${state.company.empPrefix || 'TENTOR'}001</span></div></div><div><label class="block text-sm font-medium text-slate-700 mb-1">Alamat</label><textarea name="companyAddress" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" required>${state.company.address}</textarea></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label class="block text-sm font-medium text-slate-700 mb-1">Telepon</label><input type="text" name="companyPhone" value="${state.company.phone}" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></div><div><label class="block text-sm font-medium text-slate-700 mb-1">Email</label><input type="email" name="companyEmail" value="${state.company.email}" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></div></div><div><label class="block text-sm font-medium text-slate-700 mb-1">Website</label><input type="text" name="companyWebsite" value="${state.company.website}" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></div><div class="pt-4"><button type="submit" class="bg-indigo-600 text-white px-6 py-2.5 rounded-lg hover:bg-indigo-700 flex items-center gap-2"><i data-lucide="save" class="w-4 h-4"></i> Simpan</button></div></form></div>`;
+                settingsContent = `<div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 animate-fade-in"><div class="flex items-center gap-3 mb-6"><div class="p-2 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="building-2" class="w-5 h-5"></i></div><h3 class="font-semibold text-slate-700 text-lg">Identitas LBB</h3></div><form onsubmit="saveCompanySettings(event)" class="space-y-6 max-w-2xl"><div><label class="block text-sm font-medium text-slate-700 mb-1">Nama LBB</label><input type="text" name="companyName" value="${state.company.name}" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" required></div><div><label class="block text-sm font-medium text-slate-700 mb-1">Prefix ID (Otomatis)</label><div class="flex items-center gap-2"><input type="text" name="empPrefix" value="${state.company.empPrefix || 'TENTOR'}" class="w-32 p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none font-mono uppercase" required><span class="text-sm text-slate-400 text-xs md:text-sm">Contoh: ${state.company.empPrefix || 'TENTOR'}001</span></div></div><div><label class="block text-sm font-medium text-slate-700 mb-1">Alamat</label><textarea name="companyAddress" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" required>${state.company.address}</textarea></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label class="block text-sm font-medium text-slate-700 mb-1">Telepon</label><input type="text" name="companyPhone" value="${state.company.phone}" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></div><div><label class="block text-sm font-medium text-slate-700 mb-1">Email</label><input type="email" name="companyEmail" value="${state.company.email}" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></div></div><div><label class="block text-sm font-medium text-slate-700 mb-1">Website</label><input type="text" name="companyWebsite" value="${state.company.website}" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></div><div class="pt-4"><button type="submit" class="w-full md:w-auto bg-indigo-600 text-white px-6 py-2.5 rounded-lg hover:bg-indigo-700 flex items-center justify-center gap-2"><i data-lucide="save" class="w-4 h-4"></i> Simpan</button></div></form></div>`;
             } else if (state.activeSettingsTab === 'roles') {
-                settingsContent = `<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-fade-in"><div class="p-6 border-b border-slate-100 flex justify-between items-center"><div class="flex items-center gap-3"><div class="p-2 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="briefcase" class="w-5 h-5"></i></div><h3 class="font-semibold text-slate-700 text-lg">Posisi & Fee</h3></div><button onclick="openAddRoleModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700 text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Tambah Posisi</button></div><div class="overflow-x-auto"><table class="w-full text-left"><thead class="bg-slate-50 border-b border-slate-200"><tr><th class="p-4 font-semibold text-slate-600">Nama Posisi</th><th class="p-4 font-semibold text-slate-600">Fee/Sesi</th><th class="p-4 font-semibold text-slate-600">Bonus Def</th><th class="p-4 font-semibold text-slate-600">Tunjangan Def</th><th class="p-4 font-semibold text-slate-600 text-right">Aksi</th></tr></thead><tbody>${state.roles.map(r=>`<tr class="hover:bg-slate-50 border-b border-slate-100 last:border-0"><td class="p-4 font-medium text-slate-800">${r.name}</td><td class="p-4 text-slate-600">${formatRupiah(r.salary)}</td><td class="p-4 text-slate-600">${formatRupiah(r.defaultBonus)}</td><td class="p-4 text-slate-600">${formatRupiah(r.defaultAllowance)}</td><td class="p-4 text-right flex justify-end gap-2"><button onclick="openEditRoleModal('${r.name}')" class="text-indigo-500 hover:text-indigo-700"><i data-lucide="pencil" class="w-4 h-4"></i></button><button onclick="deleteRole('${r.name}')" class="text-red-500 hover:text-red-700"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`).join('')}</tbody></table></div></div>`;
+                settingsContent = `<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-fade-in"><div class="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4"><div class="flex items-center gap-3"><div class="p-2 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="briefcase" class="w-5 h-5"></i></div><h3 class="font-semibold text-slate-700 text-lg">Posisi & Fee</h3></div><button onclick="openAddRoleModal()" class="w-full md:w-auto bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-indigo-700 text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Tambah Posisi</button></div><div class="overflow-x-auto no-scrollbar pb-2"><table class="w-full text-left"><thead class="bg-slate-50 border-b border-slate-200"><tr><th class="p-4 font-semibold text-slate-600 whitespace-nowrap">Nama Posisi</th><th class="p-4 font-semibold text-slate-600 whitespace-nowrap">Fee/Sesi</th><th class="p-4 font-semibold text-slate-600 whitespace-nowrap">Bonus Def</th><th class="p-4 font-semibold text-slate-600 whitespace-nowrap">Tunjangan Def</th><th class="p-4 font-semibold text-slate-600 text-right whitespace-nowrap">Aksi</th></tr></thead><tbody>${state.roles.map(r=>`<tr class="hover:bg-slate-50 border-b border-slate-100 last:border-0"><td class="p-4 font-medium text-slate-800 whitespace-nowrap">${r.name}</td><td class="p-4 text-slate-600 whitespace-nowrap">${formatRupiah(r.salary)}</td><td class="p-4 text-slate-600 whitespace-nowrap">${formatRupiah(r.defaultBonus)}</td><td class="p-4 text-slate-600 whitespace-nowrap">${formatRupiah(r.defaultAllowance)}</td><td class="p-4 text-right flex justify-end gap-2 whitespace-nowrap"><button onclick="openEditRoleModal('${r.name}')" class="text-indigo-500 hover:text-indigo-700"><i data-lucide="pencil" class="w-4 h-4"></i></button><button onclick="deleteRole('${r.name}')" class="text-red-500 hover:text-red-700"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`).join('')}</tbody></table></div></div>`;
             } else if (state.activeSettingsTab === 'database') {
-                settingsContent = `<div class="space-y-6 animate-fade-in"><div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6"><div class="flex items-center gap-3 mb-4"><div class="p-2 bg-blue-100 text-blue-600 rounded-lg"><i data-lucide="download" class="w-5 h-5"></i></div><div><h3 class="font-semibold text-slate-700 text-lg">Backup Database</h3><p class="text-sm text-slate-500">Unduh data sistem ke JSON.</p></div></div><button onclick="downloadBackup()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 text-sm font-medium"><i data-lucide="download" class="w-4 h-4"></i> Download Backup</button></div><div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6"><div class="flex items-center gap-3 mb-4"><div class="p-2 bg-green-100 text-green-600 rounded-lg"><i data-lucide="upload" class="w-5 h-5"></i></div><div><h3 class="font-semibold text-slate-700 text-lg">Restore Database</h3><p class="text-sm text-slate-500">Pulihkan data dari backup JSON.</p></div></div><input type="file" id="restoreInput" accept=".json" class="hidden" onchange="handleRestoreFile(event)"><button onclick="triggerRestore()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2 text-sm font-medium"><i data-lucide="upload" class="w-4 h-4"></i> Upload File Backup</button></div><div class="bg-red-50 rounded-xl shadow-sm border border-red-200 p-6"><div class="flex items-center gap-3 mb-4"><div class="p-2 bg-red-100 text-red-600 rounded-lg"><i data-lucide="trash-2" class="w-5 h-5"></i></div><div><h3 class="font-semibold text-red-700 text-lg">Reset Database</h3><p class="text-sm text-red-600/80">Hapus semua data. Tidak bisa dibatalkan.</p></div></div><button onclick="hardResetDatabase()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 flex items-center gap-2 text-sm font-medium border border-red-700"><i data-lucide="alert-triangle" class="w-4 h-4"></i> Hapus Semua Data</button></div></div>`;
+                settingsContent = `<div class="space-y-6 animate-fade-in"><div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6"><div class="flex items-center gap-3 mb-4"><div class="p-2 bg-blue-100 text-blue-600 rounded-lg"><i data-lucide="download" class="w-5 h-5"></i></div><div><h3 class="font-semibold text-slate-700 text-lg">Backup Database</h3><p class="text-sm text-slate-500">Unduh data sistem ke JSON.</p></div></div><button onclick="downloadBackup()" class="w-full md:w-auto bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 text-sm font-medium"><i data-lucide="download" class="w-4 h-4"></i> Download Backup</button></div><div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6"><div class="flex items-center gap-3 mb-4"><div class="p-2 bg-green-100 text-green-600 rounded-lg"><i data-lucide="upload" class="w-5 h-5"></i></div><div><h3 class="font-semibold text-slate-700 text-lg">Restore Database</h3><p class="text-sm text-slate-500">Pulihkan data dari backup JSON.</p></div></div><input type="file" id="restoreInput" accept=".json" class="hidden" onchange="handleRestoreFile(event)"><button onclick="triggerRestore()" class="w-full md:w-auto bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center justify-center gap-2 text-sm font-medium"><i data-lucide="upload" class="w-4 h-4"></i> Upload File Backup</button></div><div class="bg-red-50 rounded-xl shadow-sm border border-red-200 p-6"><div class="flex items-center gap-3 mb-4"><div class="p-2 bg-red-100 text-red-600 rounded-lg"><i data-lucide="trash-2" class="w-5 h-5"></i></div><div><h3 class="font-semibold text-red-700 text-lg">Reset Database</h3><p class="text-sm text-red-600/80">Hapus semua data. Tidak bisa dibatalkan.</p></div></div><button onclick="hardResetDatabase()" class="w-full md:w-auto bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 flex items-center justify-center gap-2 text-sm font-medium border border-red-700"><i data-lucide="alert-triangle" class="w-4 h-4"></i> Hapus Semua Data</button></div></div>`;
             }
-            return `<div class="space-y-6 animate-fade-in"><div><h2 class="text-2xl font-bold text-slate-800">Pengaturan</h2><p class="text-slate-500">Kelola identitas LBB dan data sistem</p></div><div class="border-b border-slate-200 mb-6"><nav class="flex gap-4"><button onclick="switchSettingsTab('company')" class="${getTabClass('company')}">Identitas LBB</button><button onclick="switchSettingsTab('roles')" class="${getTabClass('roles')}">Profil Posisi</button><button onclick="switchSettingsTab('database')" class="${getTabClass('database')}">Database</button></nav></div><div>${settingsContent}</div></div>`;
+            return `<div class="space-y-6 animate-fade-in"><div><h2 class="text-2xl font-bold text-slate-800">Pengaturan</h2><p class="text-slate-500">Kelola identitas LBB dan data sistem</p></div><div class="border-b border-slate-200 mb-6 overflow-x-auto"><nav class="flex gap-4 min-w-max"><button onclick="switchSettingsTab('company')" class="${getTabClass('company')}">Identitas LBB</button><button onclick="switchSettingsTab('roles')" class="${getTabClass('roles')}">Profil Posisi</button><button onclick="switchSettingsTab('database')" class="${getTabClass('database')}">Database</button></nav></div><div>${settingsContent}</div></div>`;
         }
         
-        // --- EMPLOYEE LAYOUT & TERMINAL (Same as before) ---
-        function renderEmployeeLayout() { const emp = state.employees.find(e => e.id === state.currentEmployeeId); if(!emp) return 'Error'; const getNavClass = (tab) => `w-full flex items-center gap-3 p-3 rounded-lg transition-colors ${state.activeEmployeeTab === tab ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'}`; const month = new Date().getMonth(); const daysWorked = state.attendanceLog.filter(l => l.employeeId === emp.id && l.type === 'IN' && new Date(l.timestamp).getMonth() === month).length; let content = ''; if (state.activeEmployeeTab === 'dashboard') { const today = new Date().toISOString().split('T')[0]; const myLogsToday = state.attendanceLog.filter(l => l.employeeId === emp.id && l.timestamp.startsWith(today)).reverse(); const sessionsToday = state.attendanceLog.filter(l => l.employeeId === emp.id && l.type === 'IN' && l.timestamp.startsWith(today)).length; const lastLog = myLogsToday[0]; const isInSession = lastLog && lastLog.type === 'IN'; content = `<div class="space-y-6 animate-fade-in"><div><h2 class="text-2xl font-bold text-slate-800">Halo, ${emp.name.split(' ')[0]}!</h2><div class="flex items-center gap-2 mt-1"><span class="text-slate-500">Status Saat Ini:</span><span class="px-2 py-0.5 rounded text-sm font-bold ${isInSession ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-200 text-slate-600'}">${isInSession ? 'SEDANG MENGAJAR' : 'TIDAK ADA KELAS'}</span></div></div><div class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl shadow-xl overflow-hidden text-white relative"><div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div><div class="p-8 text-center relative z-10"><div class="flex justify-between items-center mb-4"><p class="text-indigo-100 font-medium uppercase tracking-widest text-xs">Panel Absensi Sesi</p><div class="bg-white/10 px-3 py-1 rounded-full text-xs font-bold border border-white/20">Sesi Hari Ini: <span class="text-white text-lg ml-1">${sessionsToday}</span></div></div><h3 class="text-4xl font-bold mb-8 font-mono-display" id="dashboard-clock">00:00:00</h3><div class="flex flex-col sm:flex-row justify-center gap-4 max-w-xl mx-auto"><button onclick="handleEmployeeAttendance('IN')" class="flex-1 ${isInSession ? 'bg-white/50 text-slate-300 cursor-not-allowed' : 'bg-white text-indigo-700 hover:bg-indigo-50 active:scale-95 shadow-lg'} py-4 px-6 rounded-xl font-bold flex items-center justify-center gap-2 transition-all group"><div class="${isInSession ? 'bg-white/20' : 'bg-indigo-100 group-hover:bg-indigo-200'} p-2 rounded-full transition-colors"><i data-lucide="play" class="w-6 h-6 ${isInSession ? 'text-white' : 'text-indigo-600'}"></i></div><span>MULAI SESI</span></button><button onclick="handleEmployeeAttendance('OUT')" class="flex-1 ${!isInSession ? 'bg-indigo-900/30 text-slate-400 cursor-not-allowed' : 'bg-indigo-800 hover:bg-indigo-900 active:scale-95 text-white shadow-lg'} py-4 px-6 rounded-xl font-bold flex items-center justify-center gap-2 transition-all border border-indigo-500/30 group"><div class="${!isInSession ? 'bg-indigo-900/20' : 'bg-white/20 group-hover:bg-white/30'} p-2 rounded-full transition-colors"><i data-lucide="square" class="w-6 h-6 text-white"></i></div><span>SELESAI SESI</span></button></div><p class="text-xs text-indigo-200 mt-6">*Mengisi catatan mengajar wajib dilakukan sebelum selesai.</p></div></div><div><h3 class="font-bold text-slate-800 mb-4">Aktivitas Hari Ini</h3><div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">${myLogsToday.length > 0 ? `<div class="divide-y divide-slate-100">${myLogsToday.map(l => `<div class="p-4 flex items-center justify-between"><div class="flex items-center gap-3"><div class="p-2 rounded-full ${l.type === 'IN' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}"><i data-lucide="${l.type === 'IN' ? 'play-circle' : 'stop-circle'}" class="w-5 h-5"></i></div><div><p class="font-medium text-slate-800">${l.type === 'IN' ? 'Mulai Sesi Mengajar' : 'Selesai Sesi Mengajar'}</p>${l.note ? `<p class="text-xs text-slate-500 mt-1 italic">"${l.note}"</p>` : `<p class="text-xs text-slate-500">${new Date(l.timestamp).toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long'})}</p>`}</div></div><span class="font-mono font-bold text-slate-600">${new Date(l.timestamp).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'})}</span></div>`).join('')}</div>` : `<div class="p-8 text-center text-slate-400 flex flex-col items-center gap-2"><i data-lucide="calendar-off" class="w-8 h-8 text-slate-300"></i><p>Belum ada aktivitas sesi hari ini.</p></div>`}</div></div></div>`; setTimeout(() => { const clockEl = document.getElementById('dashboard-clock'); if(clockEl) { const updateDashClock = () => { if(document.getElementById('dashboard-clock')) { document.getElementById('dashboard-clock').innerText = new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit', second:'2-digit'}); } }; updateDashClock(); setInterval(updateDashClock, 1000); } }, 100); } else if (state.activeEmployeeTab === 'profile') { content = `<div class="space-y-6 animate-fade-in"><h2 class="text-2xl font-bold text-slate-800">Profil Saya</h2><div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 flex flex-col md:flex-row gap-8 items-start"><div class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center text-3xl font-bold text-slate-400 border-4 border-white shadow-lg">${emp.name.charAt(0)}</div><div class="space-y-4 flex-1"><div><h3 class="text-2xl font-bold text-slate-800">${emp.name}</h3><p class="text-slate-500 font-mono">${emp.id}</p></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-100 pt-4"><div><p class="text-xs text-slate-400 uppercase">Posisi</p><p class="font-medium text-slate-700">${emp.role}</p></div><div><p class="text-xs text-slate-400 uppercase">Fee / Sesi</p><p class="font-medium text-slate-700">${formatRupiah(emp.salaryPerDay)}</p></div><div><p class="text-xs text-slate-400 uppercase">Status</p><p class="inline-block px-2 py-0.5 rounded bg-green-100 text-green-700 text-xs font-bold mt-1">Aktif</p></div><div><p class="text-xs text-slate-400 uppercase">Bergabung Sejak</p><p class="font-medium text-slate-700">Januari 2024</p></div></div></div></div></div>`; } else if (state.activeEmployeeTab === 'attendance') { const myLogs = state.attendanceLog.filter(l => l.employeeId === emp.id).reverse(); content = `<div class="space-y-6 animate-fade-in"><h2 class="text-2xl font-bold text-slate-800">Riwayat Sesi</h2><div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><table class="w-full text-left"><thead class="bg-slate-50 border-b border-slate-200"><tr><th class="p-4 font-semibold text-slate-600">Tanggal</th><th class="p-4 font-semibold text-slate-600">Waktu</th><th class="p-4 font-semibold text-slate-600">Aktivitas & Catatan</th></tr></thead><tbody>${myLogs.length ? myLogs.map(l => { const isIN = l.type === 'IN'; return `<tr class="border-b border-slate-100 last:border-0 hover:bg-slate-50"><td class="p-4 text-slate-600 text-sm">${new Date(l.timestamp).toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long'})}</td><td class="p-4 font-mono text-slate-800 text-sm">${new Date(l.timestamp).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'})}</td><td class="p-4"><span class="px-2 py-1 rounded text-xs font-bold ${isIN ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">${isIN ? 'MULAI SESI' : 'SELESAI SESI'}</span>${l.note ? `<div class="mt-1 text-xs text-slate-500 italic">"${l.note}"</div>` : ''}</td></tr>`; }).join('') : '<tr><td colspan="3" class="p-8 text-center text-slate-400">Belum ada data sesi</td></tr>'}</tbody></table></div></div>`; } else if (state.activeEmployeeTab === 'salary') { const key = getAdjustmentKey(emp.id); let adj = state.payrollAdjustments[key]; if(!adj) { const r = state.roles.find(r => r.name === emp.role); adj = r ? { bonus: r.defaultBonus, allowance: r.defaultAllowance } : { bonus:0, allowance:0 }; } const basic = daysWorked * emp.salaryPerDay; const total = basic + adj.bonus + adj.allowance; content = `<div class="space-y-6 animate-fade-in"><h2 class="text-2xl font-bold text-slate-800">Info Honor & Slip</h2><div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6"><div class="flex items-center justify-between mb-6"><h3 class="font-bold text-lg text-slate-700">Estimasi Bulan Ini</h3><span class="text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full">${new Date().toLocaleDateString('id-ID', {month:'long', year:'numeric'})}</span></div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-slate-100"><div class="p-2"><p class="text-xs text-slate-400 uppercase">Total Sesi</p><p class="text-3xl font-bold text-slate-800 mt-2">${daysWorked} <span class="text-sm font-normal text-slate-500">Sesi</span></p></div><div class="p-2"><p class="text-xs text-slate-400 uppercase">Bonus & Tunjangan</p><p class="text-3xl font-bold text-green-600 mt-2">${formatRupiah(adj.bonus + adj.allowance)}</p></div><div class="p-2"><p class="text-xs text-slate-400 uppercase">Total Estimasi</p><p class="text-3xl font-bold text-blue-600 mt-2">${formatRupiah(total)}</p></div></div><div class="mt-8 text-center"><button onclick="openPayslip('${emp.id}')" class="bg-slate-800 text-white px-6 py-2 rounded-lg hover:bg-slate-900 transition-colors flex items-center gap-2 mx-auto"><i data-lucide="printer" class="w-4 h-4"></i> Cetak Slip Honor Bulan Ini</button></div></div><div class="bg-blue-50 border border-blue-100 rounded-lg p-4 flex gap-3 text-blue-700 text-sm"><i data-lucide="info" class="w-5 h-5 flex-shrink-0"></i><p>Total honor di atas adalah estimasi berjalan berdasarkan kehadiran Anda hingga hari ini. Nilai final akan dihitung pada akhir periode.</p></div></div>`; } return `<div id="employee-layout" class="flex min-h-screen bg-slate-50"><aside class="w-64 bg-white border-r border-slate-200 fixed h-full z-10 hidden md:flex flex-col"><div class="p-6 border-b border-slate-100"><p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">PORTAL TENTOR</p><h1 class="font-bold text-xl text-slate-800 truncate">${emp.name}</h1><p class="text-sm text-slate-500">${emp.id}</p></div><nav class="p-4 space-y-2 flex-1"><button onclick="switchEmployeeTab('dashboard')" class="${getNavClass('dashboard')}"><i data-lucide="layout-dashboard" class="w-5 h-5"></i><span>Dashboard</span></button><button onclick="switchEmployeeTab('profile')" class="${getNavClass('profile')}"><i data-lucide="user" class="w-5 h-5"></i><span>Profil Saya</span></button><button onclick="switchEmployeeTab('attendance')" class="${getNavClass('attendance')}"><i data-lucide="calendar-check" class="w-5 h-5"></i><span>Riwayat Sesi</span></button><button onclick="switchEmployeeTab('salary')" class="${getNavClass('salary')}"><i data-lucide="banknote" class="w-5 h-5"></i><span>Info Honor</span></button></nav><div class="p-4 border-t border-slate-100"><button onclick="logoutEmployee()" class="w-full flex items-center gap-3 p-3 rounded-lg text-red-600 hover:bg-red-50 transition-colors"><i data-lucide="log-out" class="w-5 h-5"></i><span>Keluar</span></button></div></aside><main class="flex-1 md:ml-64 p-8"><div class="md:hidden mb-6 flex items-center justify-between"><h1 class="font-bold text-lg">Portal Tentor</h1><button onclick="logoutEmployee()" class="text-red-600"><i data-lucide="log-out" class="w-6 h-6"></i></button></div>${content}</main></div>`; }
+        // --- EMPLOYEE LAYOUT & TERMINAL ---
+        function renderEmployeeLayout() { 
+            const emp = state.employees.find(e => e.id === state.currentEmployeeId); 
+            if(!emp) return 'Error'; 
+            
+            const month = new Date().getMonth(); 
+            const daysWorked = state.attendanceLog.filter(l => l.employeeId === emp.id && l.type === 'IN' && new Date(l.timestamp).getMonth() === month).length; 
+            
+            // Bottom Nav for Mobile
+            const getNavClass = (tab) => `flex flex-col items-center gap-1 p-2 ${state.activeEmployeeTab === tab ? 'text-indigo-600' : 'text-slate-400 hover:text-slate-600'} transition-colors`;
+            
+            const mobileBottomNav = `
+                <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-[90] flex justify-around pb-safe safe-area-inset-bottom h-16 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                    <button onclick="switchEmployeeTab('dashboard')" class="${getNavClass('dashboard')}">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                        <span class="text-[10px] font-bold">Home</span>
+                    </button>
+                    <button onclick="switchEmployeeTab('attendance')" class="${getNavClass('attendance')}">
+                        <i data-lucide="calendar-check" class="w-5 h-5"></i>
+                        <span class="text-[10px] font-bold">Riwayat</span>
+                    </button>
+                    <button onclick="switchEmployeeTab('salary')" class="${getNavClass('salary')}">
+                        <i data-lucide="banknote" class="w-5 h-5"></i>
+                        <span class="text-[10px] font-bold">Gaji</span>
+                    </button>
+                    <button onclick="switchEmployeeTab('profile')" class="${getNavClass('profile')}">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+                        <span class="text-[10px] font-bold">Profil</span>
+                    </button>
+                </div>`;
+
+            let content = ''; 
+            
+            // Re-using logic, just ensuring containers are responsive
+            if (state.activeEmployeeTab === 'dashboard') { 
+                const today = new Date().toISOString().split('T')[0]; 
+                const myLogsToday = state.attendanceLog.filter(l => l.employeeId === emp.id && l.timestamp.startsWith(today)).reverse(); 
+                const sessionsToday = state.attendanceLog.filter(l => l.employeeId === emp.id && l.type === 'IN' && l.timestamp.startsWith(today)).length; 
+                const lastLog = myLogsToday[0]; 
+                const isInSession = lastLog && lastLog.type === 'IN'; 
+                
+                content = `<div class="space-y-6 animate-fade-in pb-20 md:pb-0">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">Halo, ${emp.name.split(' ')[0]}!</h2>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-slate-500">Status:</span>
+                            <span class="px-2 py-0.5 rounded text-sm font-bold ${isInSession ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-200 text-slate-600'}">${isInSession ? 'MENGAJAR' : 'OFF'}</span>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl shadow-xl overflow-hidden text-white relative">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+                        <div class="p-6 md:p-8 text-center relative z-10">
+                            <div class="flex justify-between items-center mb-4">
+                                <p class="text-indigo-100 font-medium uppercase tracking-widest text-xs">Panel Absensi</p>
+                                <div class="bg-white/10 px-3 py-1 rounded-full text-xs font-bold border border-white/20">Sesi: <span class="text-white text-lg ml-1">${sessionsToday}</span></div>
+                            </div>
+                            <h3 class="text-4xl md:text-5xl font-bold mb-8 font-mono-display" id="dashboard-clock">00:00:00</h3>
+                            <div class="flex flex-col gap-3 max-w-sm mx-auto">
+                                <button onclick="handleEmployeeAttendance('IN')" class="w-full ${isInSession ? 'bg-white/50 text-slate-300 cursor-not-allowed' : 'bg-white text-indigo-700 hover:bg-indigo-50 active:scale-95 shadow-lg'} py-3.5 px-6 rounded-xl font-bold flex items-center justify-center gap-2 transition-all group">
+                                    <div class="${isInSession ? 'bg-white/20' : 'bg-indigo-100 group-hover:bg-indigo-200'} p-1.5 rounded-full transition-colors"><i data-lucide="play" class="w-5 h-5 ${isInSession ? 'text-white' : 'text-indigo-600'}"></i></div>
+                                    <span>MULAI SESI</span>
+                                </button>
+                                <button onclick="handleEmployeeAttendance('OUT')" class="w-full ${!isInSession ? 'bg-indigo-900/30 text-slate-400 cursor-not-allowed' : 'bg-indigo-800 hover:bg-indigo-900 active:scale-95 text-white shadow-lg'} py-3.5 px-6 rounded-xl font-bold flex items-center justify-center gap-2 transition-all border border-indigo-500/30 group">
+                                    <div class="${!isInSession ? 'bg-indigo-900/20' : 'bg-white/20 group-hover:bg-white/30'} p-1.5 rounded-full transition-colors"><i data-lucide="square" class="w-5 h-5 text-white"></i></div>
+                                    <span>SELESAI SESI</span>
+                                </button>
+                            </div>
+                            <p class="text-xs text-indigo-200 mt-6">*Catatan wajib diisi sebelum selesai.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 mb-4">Aktivitas Hari Ini</h3>
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                            ${myLogsToday.length > 0 ? `<div class="divide-y divide-slate-100">${myLogsToday.map(l => `<div class="p-4 flex items-center justify-between"><div class="flex items-center gap-3"><div class="p-2 rounded-full ${l.type === 'IN' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}"><i data-lucide="${l.type === 'IN' ? 'play-circle' : 'stop-circle'}" class="w-5 h-5"></i></div><div><p class="font-medium text-slate-800 text-sm">${l.type === 'IN' ? 'Mulai' : 'Selesai'}</p>${l.note ? `<p class="text-xs text-slate-500 mt-1 italic line-clamp-1">"${l.note}"</p>` : `<p class="text-xs text-slate-500 mt-1">${new Date(l.timestamp).toLocaleDateString('id-ID', {day:'numeric', month:'short'})}</p>`}</div></div><span class="font-mono font-bold text-slate-600 text-sm">${new Date(l.timestamp).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'})}</span></div>`).join('')}</div>` : `<div class="p-8 text-center text-slate-400 flex flex-col items-center gap-2"><i data-lucide="calendar-off" class="w-8 h-8 text-slate-300"></i><p class="text-sm">Belum ada aktivitas.</p></div>`}
+                        </div>
+                    </div>
+                </div>`; 
+                
+                setTimeout(() => { 
+                    const clockEl = document.getElementById('dashboard-clock'); 
+                    if(clockEl) { 
+                        const updateDashClock = () => { if(document.getElementById('dashboard-clock')) { document.getElementById('dashboard-clock').innerText = new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit', second:'2-digit'}); } }; 
+                        updateDashClock(); 
+                        setInterval(updateDashClock, 1000); 
+                    } 
+                }, 100); 
+            } else if (state.activeEmployeeTab === 'profile') { 
+                content = `<div class="space-y-6 animate-fade-in pb-20 md:pb-0"><h2 class="text-2xl font-bold text-slate-800">Profil Saya</h2><div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8 flex flex-col items-center md:flex-row md:items-start gap-6 md:gap-8"><div class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center text-3xl font-bold text-slate-400 border-4 border-white shadow-lg shrink-0">${emp.name.charAt(0)}</div><div class="space-y-4 flex-1 w-full text-center md:text-left"><div><h3 class="text-2xl font-bold text-slate-800">${emp.name}</h3><p class="text-slate-500 font-mono">${emp.id}</p></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-100 pt-4 text-left"><div><p class="text-xs text-slate-400 uppercase">Posisi</p><p class="font-medium text-slate-700">${emp.role}</p></div><div><p class="text-xs text-slate-400 uppercase">Fee / Sesi</p><p class="font-medium text-slate-700">${formatRupiah(emp.salaryPerDay)}</p></div><div><p class="text-xs text-slate-400 uppercase">Status</p><p class="inline-block px-2 py-0.5 rounded bg-green-100 text-green-700 text-xs font-bold mt-1">Aktif</p></div><div><p class="text-xs text-slate-400 uppercase">Bergabung Sejak</p><p class="font-medium text-slate-700">Januari 2024</p></div></div></div></div><button onclick="logoutEmployee()" class="w-full bg-red-50 text-red-600 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-red-100 transition-colors md:hidden"><i data-lucide="log-out" class="w-5 h-5"></i> Keluar</button></div>`; 
+            } else if (state.activeEmployeeTab === 'attendance') { 
+                const myLogs = state.attendanceLog.filter(l => l.employeeId === emp.id).reverse(); 
+                content = `<div class="space-y-6 animate-fade-in pb-20 md:pb-0"><h2 class="text-2xl font-bold text-slate-800">Riwayat Sesi</h2><div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><div class="overflow-x-auto no-scrollbar pb-2"><table class="w-full text-left"><thead class="bg-slate-50 border-b border-slate-200"><tr><th class="p-4 font-semibold text-slate-600 whitespace-nowrap">Tanggal</th><th class="p-4 font-semibold text-slate-600 whitespace-nowrap">Waktu</th><th class="p-4 font-semibold text-slate-600 min-w-[150px]">Aktivitas</th></tr></thead><tbody>${myLogs.length ? myLogs.map(l => { const isIN = l.type === 'IN'; return `<tr class="border-b border-slate-100 last:border-0 hover:bg-slate-50"><td class="p-4 text-slate-600 text-sm whitespace-nowrap">${new Date(l.timestamp).toLocaleDateString('id-ID', {weekday:'short', day:'numeric', month:'short'})}</td><td class="p-4 font-mono text-slate-800 text-sm whitespace-nowrap">${new Date(l.timestamp).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'})}</td><td class="p-4"><span class="px-2 py-1 rounded text-xs font-bold ${isIN ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">${isIN ? 'MULAI' : 'SELESAI'}</span>${l.note ? `<div class="mt-1 text-xs text-slate-500 italic line-clamp-2">"${l.note}"</div>` : ''}</td></tr>`; }).join('') : '<tr><td colspan="3" class="p-8 text-center text-slate-400">Belum ada data sesi</td></tr>'}</tbody></table></div></div></div>`; 
+            } else if (state.activeEmployeeTab === 'salary') { 
+                const key = getAdjustmentKey(emp.id); 
+                let adj = state.payrollAdjustments[key]; 
+                if(!adj) { const r = state.roles.find(r => r.name === emp.role); adj = r ? { bonus: r.defaultBonus, allowance: r.defaultAllowance } : { bonus:0, allowance:0 }; } 
+                const basic = daysWorked * emp.salaryPerDay; 
+                const total = basic + adj.bonus + adj.allowance; 
+                content = `<div class="space-y-6 animate-fade-in pb-20 md:pb-0"><h2 class="text-2xl font-bold text-slate-800">Info Honor</h2><div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6"><div class="flex items-center justify-between mb-6"><h3 class="font-bold text-lg text-slate-700">Estimasi Bulan Ini</h3><span class="text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full text-xs">${new Date().toLocaleDateString('id-ID', {month:'short', year:'2-digit'})}</span></div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-slate-100"><div class="p-2"><p class="text-xs text-slate-400 uppercase">Total Sesi</p><p class="text-3xl font-bold text-slate-800 mt-2">${daysWorked} <span class="text-sm font-normal text-slate-500">Sesi</span></p></div><div class="p-2"><p class="text-xs text-slate-400 uppercase">Bonus & Tunjangan</p><p class="text-3xl font-bold text-green-600 mt-2">${formatRupiah(adj.bonus + adj.allowance)}</p></div><div class="p-2"><p class="text-xs text-slate-400 uppercase">Total Estimasi</p><p class="text-3xl font-bold text-blue-600 mt-2">${formatRupiah(total)}</p></div></div><div class="mt-8 text-center"><button onclick="openPayslip('${emp.id}')" class="w-full md:w-auto bg-slate-800 text-white px-6 py-3 rounded-xl hover:bg-slate-900 transition-colors flex items-center justify-center gap-2 mx-auto"><i data-lucide="printer" class="w-4 h-4"></i> Cetak Slip Honor</button></div></div><div class="bg-blue-50 border border-blue-100 rounded-lg p-4 flex gap-3 text-blue-700 text-sm"><i data-lucide="info" class="w-5 h-5 flex-shrink-0"></i><p>Nilai final dihitung akhir periode.</p></div></div>`; 
+            } 
+            
+            return `
+            <div id="employee-layout" class="flex min-h-screen bg-slate-50">
+                <!-- Desktop Sidebar -->
+                <aside class="w-64 bg-white border-r border-slate-200 fixed h-full z-10 hidden md:flex flex-col">
+                    <div class="p-6 border-b border-slate-100">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">PORTAL TENTOR</p>
+                        <h1 class="font-bold text-xl text-slate-800 truncate">${emp.name}</h1>
+                        <p class="text-sm text-slate-500">${emp.id}</p>
+                    </div>
+                    <nav class="p-4 space-y-2 flex-1">
+                        <button onclick="switchEmployeeTab('dashboard')" class="w-full flex items-center gap-3 p-3 rounded-lg transition-colors ${state.activeEmployeeTab === 'dashboard' ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'}"><i data-lucide="layout-dashboard" class="w-5 h-5"></i><span>Dashboard</span></button>
+                        <button onclick="switchEmployeeTab('attendance')" class="w-full flex items-center gap-3 p-3 rounded-lg transition-colors ${state.activeEmployeeTab === 'attendance' ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'}"><i data-lucide="calendar-check" class="w-5 h-5"></i><span>Riwayat Sesi</span></button>
+                        <button onclick="switchEmployeeTab('salary')" class="w-full flex items-center gap-3 p-3 rounded-lg transition-colors ${state.activeEmployeeTab === 'salary' ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'}"><i data-lucide="banknote" class="w-5 h-5"></i><span>Info Honor</span></button>
+                        <button onclick="switchEmployeeTab('profile')" class="w-full flex items-center gap-3 p-3 rounded-lg transition-colors ${state.activeEmployeeTab === 'profile' ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'}"><i data-lucide="user" class="w-5 h-5"></i><span>Profil Saya</span></button>
+                    </nav>
+                    <div class="p-4 border-t border-slate-100">
+                        <button onclick="logoutEmployee()" class="w-full flex items-center gap-3 p-3 rounded-lg text-red-600 hover:bg-red-50 transition-colors"><i data-lucide="log-out" class="w-5 h-5"></i><span>Keluar</span></button>
+                    </div>
+                </aside>
+
+                <!-- Mobile Main Content -->
+                <main class="flex-1 md:ml-64 p-4 md:p-8 w-full">
+                    <!-- Mobile Header (Only visible on mobile) -->
+                    <div class="md:hidden mb-6 flex items-center justify-between sticky top-0 bg-slate-50 z-20 py-2">
+                        <div class="flex items-center gap-2">
+                            <div class="bg-indigo-600 p-1.5 rounded-lg"><i data-lucide="graduation-cap" class="text-white w-4 h-4"></i></div>
+                            <h1 class="font-bold text-lg text-slate-800">Portal Tentor</h1>
+                        </div>
+                    </div>
+                    
+                    ${content}
+                </main>
+
+                <!-- Mobile Bottom Navigation -->
+                ${mobileBottomNav}
+            </div>`; 
+        }
         
         function renderTerminalMode() { return `<div id="terminal-view" class="h-screen w-screen terminal-bg text-white flex flex-col items-center justify-center relative overflow-hidden font-sans"><div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0"><div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-indigo-600/20 rounded-full blur-[100px]"></div><div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-600/20 rounded-full blur-[100px]"></div></div><div class="absolute top-6 right-6 z-50"><button onclick="requestAdminAccess()" class="text-slate-500 hover:text-white transition-colors bg-white/5 p-2 rounded-full backdrop-blur-sm" title="Akses Admin"><i data-lucide="lock" class="w-6 h-6"></i></button></div><div class="z-10 w-full max-w-lg p-8 flex flex-col gap-8 text-center animate-fade-in"><div class="space-y-2"><h1 class="text-3xl md:text-4xl font-bold tracking-tight">Selamat Datang</h1><p class="text-indigo-200 text-lg">${state.company.name}</p></div><div class="py-6"><div class="font-mono-display text-6xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300" id="terminal-clock">00:00</div><div class="text-xl text-slate-400 mt-2" id="terminal-date">Senin, 1 Januari 2024</div></div><div class="glass-panel rounded-3xl p-8 shadow-2xl space-y-6"><div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-200"><i data-lucide="school" class="w-8 h-8"></i></div><div><h2 class="text-xl font-bold mb-2">Portal Tentor & Staf</h2><p class="text-slate-400 text-sm">Silakan login untuk memulai atau mengakhiri sesi belajar.</p></div><button onclick="requestEmployeeLogin()" class="w-full bg-white text-indigo-900 hover:bg-indigo-50 py-4 rounded-xl font-bold text-lg transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2"><span>LOGIN DI SINI</span><i data-lucide="arrow-right" class="w-5 h-5"></i></button></div></div><div class="absolute bottom-6 text-center z-10 text-slate-600 text-sm">&copy; ${new Date().getFullYear()} LBB System</div></div>`; }
         
