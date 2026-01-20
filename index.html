@@ -248,7 +248,7 @@
     <!-- FIREBASE SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
-        import { getAuth, signInAnonymously, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
         import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, setDoc, query, where } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
 
         // --- FIREBASE CONFIGURATION ---
@@ -298,6 +298,16 @@
         
         // Initialize Auth and Listeners
         async function initFirebase() {
+            // Listen for auth state changes globally
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    console.log("Firebase: User is authenticated:", user.uid);
+                    setupListeners(); // Start listening to data ONLY when authenticated
+                } else {
+                    console.log("Firebase: User is signed out");
+                }
+            });
+
             try {
                 // Correct Auth Flow: Check for Custom Token First (Required for Canvas)
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -307,79 +317,73 @@
                     await signInAnonymously(auth);
                     console.log("Firebase: Signed in anonymously");
                 }
-                
-                const user = auth.currentUser;
-                if (!user) return;
-
-                // --- LISTENERS ---
-                
-                // 1. Employees
-                const empRef = collection(db, 'artifacts', appId, 'public', 'data', 'employees');
-                onSnapshot(empRef, (snapshot) => {
-                    const emps = [];
-                    snapshot.forEach(doc => {
-                        emps.push({ ...doc.data(), docId: doc.id });
-                    });
-                    // Sort by ID
-                    state.employees = emps.sort((a,b) => a.id.localeCompare(b.id));
-                    renderApp();
-                }, (error) => console.error("Error listening to employees:", error));
-
-                // 2. Roles
-                const roleRef = collection(db, 'artifacts', appId, 'public', 'data', 'roles');
-                onSnapshot(roleRef, (snapshot) => {
-                    const roles = [];
-                    snapshot.forEach(doc => {
-                        roles.push({ ...doc.data(), docId: doc.id });
-                    });
-                    state.roles = roles;
-                    renderApp();
-                }, (error) => console.error("Error listening to roles:", error));
-
-                // 3. Attendance Log
-                const attRef = collection(db, 'artifacts', appId, 'public', 'data', 'attendanceLog');
-                onSnapshot(attRef, (snapshot) => {
-                    const logs = [];
-                    snapshot.forEach(doc => {
-                        logs.push({ ...doc.data(), docId: doc.id });
-                    });
-                    // Sort by timestamp
-                    state.attendanceLog = logs.sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
-                    renderApp();
-                }, (error) => console.error("Error listening to logs:", error));
-
-                // 4. Payroll Adjustments
-                const payRef = collection(db, 'artifacts', appId, 'public', 'data', 'payrollAdjustments');
-                onSnapshot(payRef, (snapshot) => {
-                    const adj = {};
-                    snapshot.forEach(doc => {
-                        const data = doc.data();
-                        adj[data.key] = { ...data, docId: doc.id };
-                    });
-                    state.payrollAdjustments = adj;
-                    renderApp();
-                }, (error) => console.error("Error listening to payroll:", error));
-                
-                // 5. Company Settings
-                const compRef = collection(db, 'artifacts', appId, 'public', 'data', 'company');
-                onSnapshot(compRef, (snapshot) => {
-                    if (!snapshot.empty) {
-                        const data = snapshot.docs[0].data();
-                        state.company = { ...state.company, ...data, docId: snapshot.docs[0].id };
-                        renderApp();
-                    }
-                }, (error) => console.error("Error listening to company:", error));
-
             } catch (error) {
-                console.error("Firebase Init Error:", error);
+                console.error("Firebase Auth Error:", error);
                 
                 // Friendly error message for users using their own config without Anon Auth
                 if (error.code === 'auth/admin-restricted-operation' || error.code === 'auth/operation-not-allowed') {
-                     showNotification("Error: Aktifkan 'Anonymous' Sign-in di Firebase Console Anda.", "error");
+                     alert("ERROR KRITIS: Fitur 'Anonymous Sign-in' belum aktif di Firebase Console Anda.\n\nSilakan buka Console > Authentication > Sign-in method > Aktifkan Anonymous.");
                 } else {
-                     showNotification("Gagal terhubung ke database!", "error");
+                     showNotification("Gagal login ke database: " + error.message, "error");
                 }
             }
+        }
+
+        function setupListeners() {
+            // 1. Employees
+            const empRef = collection(db, 'artifacts', appId, 'public', 'data', 'employees');
+            onSnapshot(empRef, (snapshot) => {
+                const emps = [];
+                snapshot.forEach(doc => {
+                    emps.push({ ...doc.data(), docId: doc.id });
+                });
+                state.employees = emps.sort((a,b) => a.id.localeCompare(b.id));
+                renderApp();
+            }, (error) => console.error("Error listening to employees:", error));
+
+            // 2. Roles
+            const roleRef = collection(db, 'artifacts', appId, 'public', 'data', 'roles');
+            onSnapshot(roleRef, (snapshot) => {
+                const roles = [];
+                snapshot.forEach(doc => {
+                    roles.push({ ...doc.data(), docId: doc.id });
+                });
+                state.roles = roles;
+                renderApp();
+            }, (error) => console.error("Error listening to roles:", error));
+
+            // 3. Attendance Log
+            const attRef = collection(db, 'artifacts', appId, 'public', 'data', 'attendanceLog');
+            onSnapshot(attRef, (snapshot) => {
+                const logs = [];
+                snapshot.forEach(doc => {
+                    logs.push({ ...doc.data(), docId: doc.id });
+                });
+                state.attendanceLog = logs.sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
+                renderApp();
+            }, (error) => console.error("Error listening to logs:", error));
+
+            // 4. Payroll Adjustments
+            const payRef = collection(db, 'artifacts', appId, 'public', 'data', 'payrollAdjustments');
+            onSnapshot(payRef, (snapshot) => {
+                const adj = {};
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    adj[data.key] = { ...data, docId: doc.id };
+                });
+                state.payrollAdjustments = adj;
+                renderApp();
+            }, (error) => console.error("Error listening to payroll:", error));
+            
+            // 5. Company Settings
+            const compRef = collection(db, 'artifacts', appId, 'public', 'data', 'company');
+            onSnapshot(compRef, (snapshot) => {
+                if (!snapshot.empty) {
+                    const data = snapshot.docs[0].data();
+                    state.company = { ...state.company, ...data, docId: snapshot.docs[0].id };
+                    renderApp();
+                }
+            }, (error) => console.error("Error listening to company:", error));
         }
 
         initFirebase();
@@ -437,36 +441,64 @@
         };
 
         // --- FIREBASE HELPER FUNCTIONS (Async Wrappers) ---
+        function checkAuth() {
+            if (!window.auth.currentUser) {
+                alert("Koneksi Database Terputus.\nPastikan 'Anonymous Sign-in' aktif di Firebase Console.");
+                return false;
+            }
+            return true;
+        }
+
         async function fbAdd(collectionName, data) {
+            if (!checkAuth()) return false;
             try {
                 const colRef = window.collection(window.db, 'artifacts', window.appId, 'public', 'data', collectionName);
                 await window.addDoc(colRef, data);
                 return true;
-            } catch (e) { console.error(e); showNotification('Gagal menyimpan data: ' + e.message, 'error'); return false; }
+            } catch (e) { 
+                console.error(e); 
+                showNotification('Gagal simpan: ' + e.code, 'error'); 
+                return false; 
+            }
         }
 
         async function fbUpdate(collectionName, docId, data) {
+            if (!checkAuth()) return false;
             try {
                 const docRef = window.doc(window.db, 'artifacts', window.appId, 'public', 'data', collectionName, docId);
                 await window.updateDoc(docRef, data);
                 return true;
-            } catch (e) { console.error(e); showNotification('Gagal update data: ' + e.message, 'error'); return false; }
+            } catch (e) { 
+                console.error(e); 
+                showNotification('Gagal update: ' + e.code, 'error'); 
+                return false; 
+            }
         }
 
         async function fbSet(collectionName, docId, data) { // Creates or overwrites
+             if (!checkAuth()) return false;
              try {
                 const docRef = window.doc(window.db, 'artifacts', window.appId, 'public', 'data', collectionName, docId);
                 await window.setDoc(docRef, data);
                 return true;
-            } catch (e) { console.error(e); showNotification('Gagal set data: ' + e.message, 'error'); return false; }
+            } catch (e) { 
+                console.error(e); 
+                showNotification('Gagal set: ' + e.code, 'error'); 
+                return false; 
+            }
         }
 
         async function fbDelete(collectionName, docId) {
+            if (!checkAuth()) return false;
             try {
                 const docRef = window.doc(window.db, 'artifacts', window.appId, 'public', 'data', collectionName, docId);
                 await window.deleteDoc(docRef);
                 return true;
-            } catch (e) { console.error(e); showNotification('Gagal hapus data: ' + e.message, 'error'); return false; }
+            } catch (e) { 
+                console.error(e); 
+                showNotification('Gagal hapus: ' + e.code, 'error'); 
+                return false; 
+            }
         }
 
         // --- CORE LOGIC ---
