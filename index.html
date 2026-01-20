@@ -203,8 +203,16 @@
             </div>
             <form onsubmit="handleSaveEmployee(event)" class="p-6 space-y-4">
                 <input type="hidden" name="docId" id="empDocIdInput">
-                <input type="hidden" name="id" id="empIdInput">
-                <div><label class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap</label><input type="text" name="name" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></div>
+                <!-- Hapus hidden input lama, ganti dengan input visible -->
+                <!-- <input type="hidden" name="id" id="empIdInput"> -->
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">ID (Opsional / Custom)</label>
+                    <input type="text" name="customId" id="empCustomIdInput" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none font-mono uppercase placeholder-slate-400" placeholder="Kosongkan untuk Auto-Generate">
+                    <p class="text-xs text-slate-400 mt-1">*Contoh: MTK-001, ADM-BUDI, dll.</p>
+                </div>
+
+                <div><label class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap</label><input type="text" name="name" id="empNameInput" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></div>
                 <div><label class="block text-sm font-medium text-slate-700 mb-1">Posisi/Mapel</label><select id="roleSelect" name="role" required onchange="handleRoleChange(this.value)" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white"><option value="">Pilih Posisi...</option></select></div>
                 <div><label class="block text-sm font-medium text-slate-700 mb-1">Fee per Sesi (Rp)</label><input type="number" id="salaryInput" name="salary" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"><p class="text-xs text-slate-400 mt-1">*Otomatis sesuai standar posisi.</p></div>
                 <div class="pt-4 flex gap-3"><button type="button" onclick="toggleModal('modal-employee', false)" class="flex-1 py-2 border border-slate-300 rounded-lg text-slate-600 hover:bg-slate-50">Batal</button><button type="submit" class="flex-1 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium">Simpan</button></div>
@@ -523,24 +531,73 @@
 
         // --- EMPLOYEE & ROLE CRUD ---
         function handleRoleChange(roleName) { const role = state.roles.find(r => r.name === roleName); if (role) document.getElementById('salaryInput').value = role.salary; }
-        function openAddEmployeeModal() { document.querySelector('#modal-employee form').reset(); document.getElementById('empIdInput').value = ''; document.getElementById('empDocIdInput').value = ''; document.getElementById('modal-employee-title').innerText = 'Tambah Data'; populateRoleDropdown(); toggleModal('modal-employee', true); }
-        function openEditEmployeeModal(id) { const emp = state.employees.find(e => e.id === id); const form = document.querySelector('#modal-employee form'); populateRoleDropdown(); form.id.value = emp.id; form.docId.value = emp.docId; form.name.value = emp.name; form.role.value = emp.role; form.salary.value = emp.salaryPerDay; document.getElementById('modal-employee-title').innerText = 'Edit Data'; toggleModal('modal-employee', true); }
+        
+        function openAddEmployeeModal() { 
+            document.querySelector('#modal-employee form').reset(); 
+            // Reset input ID Custom
+            document.getElementById('empCustomIdInput').value = '';
+            document.getElementById('empDocIdInput').value = ''; 
+            document.getElementById('modal-employee-title').innerText = 'Tambah Data'; 
+            populateRoleDropdown(); 
+            toggleModal('modal-employee', true); 
+        }
+        
+        function openEditEmployeeModal(id) { 
+            const emp = state.employees.find(e => e.id === id); 
+            const form = document.querySelector('#modal-employee form'); 
+            populateRoleDropdown(); 
+            // Isi form dengan data yang ada
+            document.getElementById('empCustomIdInput').value = emp.id;
+            document.getElementById('empNameInput').value = emp.name;
+            form.docId.value = emp.docId; 
+            form.role.value = emp.role; 
+            form.salary.value = emp.salaryPerDay; 
+            document.getElementById('modal-employee-title').innerText = 'Edit Data'; 
+            toggleModal('modal-employee', true); 
+        }
+
         function populateRoleDropdown() { const select = document.getElementById('roleSelect'); select.innerHTML = '<option value="">Pilih Posisi...</option>'; state.roles.forEach(r => { const opt = document.createElement('option'); opt.value = r.name; opt.innerText = r.name; select.appendChild(opt); }); }
         
         async function handleSaveEmployee(e) { 
             e.preventDefault(); 
             const fd = new FormData(e.target); 
             const docId = fd.get('docId');
+            const customId = fd.get('customId').trim().toUpperCase(); // Ambil ID Custom
             const data = { name: fd.get('name'), role: fd.get('role'), salaryPerDay: parseInt(fd.get('salary')) }; 
             
             toggleModal('modal-employee', false);
             showNotification('Menyimpan data...', 'success');
 
             if(docId) { 
-                await fbUpdate('employees', docId, data);
+                // Mode Edit
+                // Jika user mengubah ID saat edit, kita update juga field id-nya
+                const updateData = { ...data };
+                if (customId) updateData.id = customId;
+
+                // Cek duplikasi ID jika ID berubah
+                const existingEmp = state.employees.find(e => e.id === customId);
+                if (existingEmp && existingEmp.docId !== docId) {
+                    showNotification('Gagal: ID sudah digunakan oleh ' + existingEmp.name, 'error');
+                    return;
+                }
+
+                await fbUpdate('employees', docId, updateData);
             } else { 
-                const newId = (state.company.empPrefix || 'TENTOR') + String(state.employees.length+1).padStart(3,'0'); 
-                await fbAdd('employees', { id: newId, ...data }); 
+                // Mode Tambah
+                let finalId = customId;
+                
+                // Jika kosong, Auto Generate
+                if (!finalId) {
+                    finalId = (state.company.empPrefix || 'TENTOR') + String(state.employees.length+1).padStart(3,'0');
+                }
+
+                // Cek Duplikasi ID
+                if (state.employees.some(e => e.id === finalId)) {
+                    showNotification('Gagal: ID ' + finalId + ' sudah ada! Gunakan ID lain.', 'error');
+                    return;
+                }
+
+                await fbAdd('employees', { id: finalId, ...data }); 
             } 
         }
 
